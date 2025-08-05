@@ -85,6 +85,7 @@ return {
           "html", -- HTML LSP
           "gopls", -- Go LSP
           "clangd", -- C/C++ LSP
+          "golangci_lint_ls", -- GolangCI-Lint LSP
         },
         automatic_installation = true, -- Automatically install missing servers
       })
@@ -120,6 +121,11 @@ return {
         filetypes = { "c", "cpp", "objc", "objcpp" },
         single_file_support = true,
         root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+      })
+      lspconfig.golangci_lint_ls.setup({
+        capabilities = capabilities,
+        filetypes = { "go", "gomod" },
+        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
       })
     end,
   },

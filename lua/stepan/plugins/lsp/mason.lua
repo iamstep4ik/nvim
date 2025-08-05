@@ -28,6 +28,7 @@ return {
           "lua_ls",
           "pyright",
           "gopls",
+          "golangci_lint_ls",
         },
         automatic_installation = false,
       })
@@ -46,6 +47,7 @@ return {
           "gotests",
           "impl",
           "staticcheck",
+          "golangci-lint",
         },
       })
     end,
