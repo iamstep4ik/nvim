@@ -19,4 +19,7 @@ require("lazy").setup({ { import = "stepan.plugins" }, { import = "stepan.plugin
   change_detection = {
     notify = false,
   },
+  rocks = {
+    hererocks = false,
+  },
 })

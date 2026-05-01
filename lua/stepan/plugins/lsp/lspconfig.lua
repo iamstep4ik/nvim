@@ -59,7 +59,7 @@ return {
         end,
       })
 
-      -- Configure Diagnostic signs (gutter icons)
+      -- Configure Diagnostic signs (gutter icons) + inline display
       vim.diagnostic.config({
         signs = {
           text = {
@@ -68,6 +68,18 @@ return {
             [vim.diagnostic.severity.INFO] = " ",
             [vim.diagnostic.severity.HINT] = "󰠠 ",
           },
+        },
+        virtual_text = {
+          prefix = "●",
+          spacing = 4,
+          source = "if_many",
+        },
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true,
+        float = {
+          border = "rounded",
+          source = "if_many",
         },
       })
 

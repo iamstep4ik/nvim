@@ -31,7 +31,7 @@ return {
           "clangd",
           "golangci_lint_ls",
         },
-        automatic_installation = true,
+        automatic_enable = false,
       })
 
       mason_tool_installer.setup({
@@ -49,6 +49,7 @@ return {
           "impl",
           "staticcheck",
           "golangci-lint",
+          "sql-formatter",
         },
       })
     end,
