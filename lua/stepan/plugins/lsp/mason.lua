@@ -24,13 +24,14 @@ return {
 
       mason_lspconfig.setup({
         ensure_installed = {
-          "html",
           "lua_ls",
           "pyright",
+          "html",
           "gopls",
+          "clangd",
           "golangci_lint_ls",
         },
-        automatic_installation = false,
+        automatic_installation = true,
       })
 
       mason_tool_installer.setup({

@@ -8,13 +8,10 @@ return {
       { "folke/neodev.nvim", opts = {} }, -- Lua development setup
     },
     config = function()
-      -- Import the necessary plugins
-      local lspconfig = require("lspconfig")
-      local mason_lspconfig = require("mason-lspconfig")
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
       local keymap = vim.keymap -- for conciseness
 
-      -- Create autocommand for LSP setup
+      -- Create autocommand for LSP setup (buffer-local keymaps)
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
@@ -62,37 +59,26 @@ return {
         end,
       })
 
-      -- Capabilities for autocompletion (via cmp-nvim-lsp)
-      local capabilities = cmp_nvim_lsp.default_capabilities()
-
       -- Configure Diagnostic signs (gutter icons)
       vim.diagnostic.config({
         signs = {
           text = {
-            [vim.diagnostic.severity.ERROR] = " ",
-            [vim.diagnostic.severity.WARN] = " ",
-            [vim.diagnostic.severity.INFO] = " ",
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
             [vim.diagnostic.severity.HINT] = "󰠠 ",
           },
         },
       })
 
-      -- Configure mason-lspconfig
-      mason_lspconfig.setup({
-        ensure_installed = {
-          "lua_ls", -- Lua LSP
-          "pyright", -- Python LSP
-          "html", -- HTML LSP
-          "gopls", -- Go LSP
-          "clangd", -- C/C++ LSP
-          "golangci_lint_ls", -- GolangCI-Lint LSP
-        },
-        automatic_installation = true, -- Automatically install missing servers
+      -- Default capabilities (cmp completion) for every LSP server
+      -- (mason-lspconfig ensure_installed lives in plugins/lsp/mason.lua)
+      vim.lsp.config("*", {
+        capabilities = cmp_nvim_lsp.default_capabilities(),
       })
 
-      -- Configure individual LSP servers
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
+      -- Per-server overrides (defaults ship with nvim-lspconfig)
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
             diagnostics = { globals = { "vim" } },
@@ -101,12 +87,7 @@ return {
         },
       })
 
-      lspconfig.pyright.setup({
-        capabilities = capabilities,
-      })
-
-      lspconfig.gopls.setup({
-        capabilities = capabilities,
+      vim.lsp.config("gopls", {
         settings = {
           gopls = {
             analyses = { unusedparams = true, shadow = true },
@@ -115,17 +96,25 @@ return {
         },
       })
 
-      lspconfig.clangd.setup({
-        capabilities = capabilities,
+      vim.lsp.config("clangd", {
         cmd = { "clangd", "--background-index" },
         filetypes = { "c", "cpp", "objc", "objcpp" },
-        single_file_support = true,
-        root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+        root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
       })
-      lspconfig.golangci_lint_ls.setup({
-        capabilities = capabilities,
+
+      vim.lsp.config("golangci_lint_ls", {
         filetypes = { "go", "gomod" },
-        root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+        root_markers = { "go.work", "go.mod", ".git" },
+      })
+
+      -- Activate the servers
+      vim.lsp.enable({
+        "lua_ls",
+        "pyright",
+        "html",
+        "gopls",
+        "clangd",
+        "golangci_lint_ls",
       })
     end,
   },
