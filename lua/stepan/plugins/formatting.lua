@@ -24,6 +24,12 @@ return {
         mysql = { "sql_formatter" },
         plsql = { "sql_formatter" },
       },
+      formatters = {
+        sql_formatter = {
+          -- PostgreSQL dialect so $1, $2, ... positional params parse correctly.
+          prepend_args = { "--language", "postgresql" },
+        },
+      },
       format_on_save = {
         lsp_fallback = true,
         async = false,

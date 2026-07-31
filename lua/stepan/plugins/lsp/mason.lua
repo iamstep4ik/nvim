@@ -50,6 +50,7 @@ return {
           "staticcheck",
           "golangci-lint",
           "sql-formatter",
+          "delve",
         },
       })
     end,
