@@ -8,6 +8,8 @@ return {
   opts = {
     spec = {
       { "<leader>b", group = "debug" },
+      { "<leader>R", group = "rest/kulala" },
+      { "<leader>l", group = "tui apps" },
     },
   },
 }

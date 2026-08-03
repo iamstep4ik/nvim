@@ -69,11 +69,13 @@ return {
             [vim.diagnostic.severity.HINT] = "󰠠 ",
           },
         },
-        virtual_text = {
-          prefix = "●",
-          spacing = 4,
-          source = "if_many",
+        -- native inline diagnostics (replaces error-lens.nvim), Neovim 0.11+
+        virtual_lines = {
+          format = function(diagnostic)
+            return diagnostic.message
+          end,
         },
+        virtual_text = false,
         underline = true,
         update_in_insert = false,
         severity_sort = true,
